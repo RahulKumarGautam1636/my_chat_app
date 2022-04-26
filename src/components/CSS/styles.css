@@ -1,0 +1,200 @@
+* { padding: 0; margin: 0; box-sizing: border-box; }
+
+body {
+    height: auto;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    background: #dfeefb;
+    background: #425565;
+    place-items: center;
+    font-family: 'Rubik', sans-serif;
+}
+#root {
+    width: 50%;
+    height: 100%;
+    padding: 2rem 0 4rem 0;
+    min-width: 44rem;
+}
+.card {
+    width: 100%;
+    display: flex;
+    padding: 2rem;
+    border-radius: 0.6rem;
+    background: white;
+    margin: 1.5rem 0;
+}
+.voteBox {
+    height: 6rem;
+    background: #dfeefb;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 12px;
+    justify-content: space-between;
+    border-radius: 5px;
+    color: hsl(238, 40%, 52%);
+}
+.commentBox {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1.5rem;
+    color: hsl(211, 10%, 45%);
+    width: 100%;
+}
+.avatarBox {
+    display: flex;
+    justify-content: space-between;
+}
+.avatarBox > div {
+    display: flex;
+    align-items: center;
+}
+/* .avatarBox > div:nth-child(2) { */
+.replyBox {
+    display: flex;
+    align-items: center;
+}
+.avatar {
+    height: 2rem;
+}
+.userName {
+    margin: 0 1rem;
+    color: hsl(212, 24%, 26%);
+}
+.replyBox h4 {
+    color: hsl(238, 40%, 52%);
+}
+.reply {
+    margin-right: 1rem;
+}
+.comment {
+    margin-top: 0.8rem;
+}
+.comment p {
+    line-height: 1.5rem;
+    font-size: clamp(0.5rem, 4vw, 1rem);
+}
+.createdAt {
+    font-size: clamp(0.5rem, 4vw, 1rem);
+}
+.comment a {
+  text-decoration: none;
+  font-weight: bold;
+}
+.reply-card {
+    width: 94%;
+    margin-left: auto;
+    border-left: 2.5px solid hsl(0deg 0% 69% / 42%);
+    padding-left: 2.5rem;
+}
+form {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+form img {
+  height: 3.5rem;
+  padding-left: 0.5rem;
+}
+form textarea {
+  margin: 0 1.2rem;
+  height: 6rem;
+  border-radius: 5px;
+  width: -webkit-fill-available;
+  border: 1px solid #919090eb;
+  padding: 0.8rem 1rem;
+  font-family: "Rubik", sans-serif;
+  resize: none;
+  outline: none;
+}
+form button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  border: none;
+  background: #5f28d1;
+  font-weight: bold;
+  color: white;
+  font-size: 1rem;
+}
+.hide {
+  display: block !important;
+}
+.reply2 .replyBox {
+  display: none;
+}
+
+@media only screen and (max-width: 850px) {
+  #root {
+    /* padding: 2rem 2rem 4rem 2rem; */
+    min-width: auto;
+    width: 88%;
+
+  }
+}
+@media only screen and (max-width: 600px) {
+  #root {
+    padding-bottom: 7rem;
+  }
+  .card {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .voteBox {
+    flex-direction: row;
+    height: 2.5rem;
+    width: 6.5rem;
+    /* margin: 1.5rem auto 0 0; */
+  }
+  .commentBox {
+    margin-left: 0;
+  }
+  #mainInput {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 1rem;
+    padding: 0 1rem;
+  }
+  #mainInput img {
+    padding-left: 0;
+  }
+  #mainInput textarea {
+    margin: 0 1rem;
+  }
+  .reply-card {
+    padding-left: 1.4rem;
+  }
+  .reply-card .card {
+    padding: 1.8rem;
+  }
+  .reply2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+  .avatarBox .replyBox {
+    display: none;
+  }
+  .reply2 .replyBox {
+    display: flex;
+  }
+  .reply-card .reply2 {
+    margin-top: 1rem;
+  }
+  .reply-card .userName {
+    font-size: clamp(0.8rem, 4vw, 1rem);
+  }
+  .reply-card .createdAt {
+    font-size: clamp(0.5rem, 3.2vw, 1rem);
+    padding-top: 3px;
+  }
+  .reply-card .comment p {
+    font-size: clamp(0.5rem, 3.5vw, 1rem);
+    margin-top: 0;
+  }
+
+}
