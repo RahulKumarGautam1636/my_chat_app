@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import data from './data.json';
-// import InputBox from './inputBox.js';
 import './CSS/styles.css';
-// import Timeline from './timeline.js';
+
 
 const App = () => {
-  // const data = JSON.parse(JSON.stringify(jsonData));
   const [myData, setMyData] = useState(data.comments);
-  // console.log(myData);
-  function getData() {
-    console.log(myData);
-  }
+
   return (
-    <div onClick={getData}>
+    <div>
     <Timeline myData={myData} setMyData={setMyData}/>
     <div id="mainInput">
     <InputBox myData={myData} setMyData={setMyData}/>
@@ -22,24 +17,13 @@ const App = () => {
 }
 
 const InputBox = (props) => {
-  // const user = !props.user ? "" : "@" + props.user + " ";
   const [comment, setComment] = useState('');
-  // const [isReplying, setIsReplying] = useState(false);
 
-  // useEffect(() => {
-  //   setComment(user);
-  // })
-
-  // function updateUser() {
-  // }
   const handleForm = (e) => {
-    // const clickedCard = props.myData.filter(i => i.id === props.clickedCardId);
-    // const replyTo = !clickedCard[0].user.username ? "" : clickedCard[0].user.username;
+
     e.preventDefault();
-    // console.log(props.replyingToId);
-    const replyUser = !props.replyingTo ? "" : props.replyingTo;
     const randomId = Math.floor(Math.random()*1000000);
-    // console.log(clickedCard);
+
     const newComment = {
       "id": randomId,
       "content": comment,
@@ -66,8 +50,7 @@ const InputBox = (props) => {
     for (var i=0; i<props.myData.length; i++) {
       // var matchItem = props.myData[i].replies.filter(r => r.id = props.replyingToId);
 
-      if (props.myData[i].id == props.replyingToId) {
-        console.log(props.myData[i].id);
+      if (props.myData[i].id === Number(props.replyingToId)) {                //---------------------------
 
       // let newData = props.myData.map(el => (
       //     el.id == props.replyingToId ? { ...el, [12]: newComment } : el
@@ -76,7 +59,8 @@ const InputBox = (props) => {
 
       // let newData = { ...props.myData[i].replies };
       // console.log(newData);
-      props.setMyData(item => [...item, props.myData[i].replies[props.myData[i].replies.length] = {
+      let foundComment = i;
+      props.setMyData(item => [...item, props.myData[foundComment].replies[props.myData[foundComment].replies.length] = {
       // props.setMyData(item => [...item, item[i].replies[item[i].replies.length] = {
       // props.setMyData(item => [...item, item[i].replies[item[i].replies.length] = {
         "id": randomId,
@@ -93,32 +77,23 @@ const InputBox = (props) => {
         },
         "replies": []
       }]);
-      // props.setMyData(props.myData);
 
         props.setMyData(preData => {
           return (
             preData.filter((item) => {
-              console.log(item);
-              // return { ...preData[i-1], [props.replyingTo]: newComment }
-              return item.id != randomId;
+              console.log(typeof(randomId));
+
+              return item.id !== randomId;             // ------------------
             })
           )
         });
         setComment("");
         return;
-        // break;
       } else {
         for (var j=0; j<props.myData[i].replies.length; j++) {
-          if (props.myData[i].replies[j].id == props.replyingToId) {
-            // console.log(props.myData[i].replies[j]);
-            // console.log(i + " " + j);
-            // console.log(props.myData[i])
-            // console.log(props.myData[i].replies[j])
-            //
-            // let newData = { ...props.myData[i].replies };
-            // console.log(newData);
-
-            props.setMyData(item => [...item, props.myData[i].replies[props.myData[i].replies.length] = {
+          if (props.myData[i].replies[j].id === Number(props.replyingToId)) {
+            let foundReply = i;
+            props.setMyData(item => [...item, props.myData[foundReply].replies[props.myData[foundReply].replies.length] = {
               "id": randomId,
               "content": comment,
               "createdAt": "Just now",
@@ -137,60 +112,36 @@ const InputBox = (props) => {
             props.setMyData(preData => {
               return (
                 preData.filter((item) => {
-                  console.log(item);
-                  // return { ...preData[i-1], [props.replyingTo]: newComment }
-                  return item.id != randomId;
+                  return item.id !== randomId;
                 })
               )
             });
             setComment("");
             return;
-
-            // props.myData[i].replies[props.myData[i].replies.length] = {
-            //   "id": Math.floor(Math.random()*1000000),
-            //   "content": comment,
-            //   "createdAt": "Just now",
-            //   "score": 0,
-            //   "replyingTo": props.replyingTo,
-            //   "user": {
-            //     "image": {
-            //       "png": "./images/avatars/image-juliusomo.png",
-            //       "webp": "./images/avatars/image-juliusomo.webp"
-            //     },
-            //     "username": "juliusomo"
-            //   },
-            //   "replies": []
-            // };
-
-            // break;
           }
         }
       }
     }
-
-
-    // if (isReplying) {
       props.setMyData(preData => [...preData, newComment]);
-    // }
 
     setComment("");
-    console.log(props.myData);
   }
   return (
       <form onSubmit={handleForm}>
-        <img src={data.currentUser.image.png} alt="avatar" />
         <textarea onChange={e => setComment(e.target.value)} name="comment" value={comment} placeholder={props.replyingTo} rows="8" cols="80"></textarea>
-        <button type="submit">SEND</button>
+          <div>
+            <img src={data.currentUser.image.png} alt="avatar" />
+            <textarea onChange={e => setComment(e.target.value)} name="comment" value={comment} placeholder={props.replyingTo} rows="8" cols="80"></textarea>
+            <button type="submit">SEND</button>
+          </div>
       </form>
   )
 }
 
 const Timeline = (props) => {
-  // console.log(props.myData);
     return (
       <>
       { props.myData.map((c, index) => {
-        // console.log(c);
         return (
           <div key={index}>
           <Card user={c.user.username} cardId={c.id} myData={props.myData} setMyData={props.setMyData} comments={c}/>
@@ -221,11 +172,7 @@ const ReplyCard = (props) => {
 const Card = (props) => {
   const [replyTo, setReplyTo] = useState('');
   const [replyToId, setReplyId] = useState(null);
-  // const replyTo = !props.comments.replyingTo ? "" : props.comments.replyingTo;
-  // console.log(props.myData);
-  // var replyingTo = "test";
   const clickedReply = "input" + props.cardId;
-  // const clickedReply = "input" + props.cardId;
   const showInputField = (e) => {
   const reply = document.querySelector('.' + clickedReply);
   reply.classList.toggle('hide');
@@ -233,31 +180,23 @@ const Card = (props) => {
   let replyingToId = e.target.attributes.cardid.value;
   setReplyTo(replyingTo);
   setReplyId(replyingToId);
-  // replyingTo = !clickedCard ? "" : clickedCard[0].user.username;
 }
 
 
   return (
     <>
     <div className="card">
-
-      <div class="reply2">
-
+      <div className="reply2">
       <div className="voteBox">
       <img src="images/icon-plus.svg" alt="upvote" className="upvote" />
       <h5>{props.comments.score}</h5>
       <img src="images/icon-minus.svg" alt="downvote" className="downvote" />
       </div>
-
       <div className="replyBox">
         <img className="reply" src="images/icon-reply.svg" alt="reply" />
         <h4 onClick={showInputField} name={props.comments.user.username} cardid={props.cardId}>Reply</h4>
       </div>
-
       </div>
-
-
-
       <div className="commentBox">
       <div className="avatarBox">
         <div>

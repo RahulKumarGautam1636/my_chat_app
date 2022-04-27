@@ -7,7 +7,6 @@ body {
     display: flex;
     justify-content: center;
     background: #dfeefb;
-    background: #425565;
     place-items: center;
     font-family: 'Rubik', sans-serif;
 }
@@ -36,6 +35,9 @@ body {
     border-radius: 5px;
     color: hsl(238, 40%, 52%);
 }
+.voteBox p {
+    color: hsl(238, 40%, 52%);
+}
 .commentBox {
     display: flex;
     flex-direction: column;
@@ -51,7 +53,6 @@ body {
     display: flex;
     align-items: center;
 }
-/* .avatarBox > div:nth-child(2) { */
 .replyBox {
     display: flex;
     align-items: center;
@@ -82,6 +83,7 @@ body {
 .comment a {
   text-decoration: none;
   font-weight: bold;
+  color: hsl(238, 40%, 52%);
 }
 .reply-card {
     width: 94%;
@@ -103,7 +105,7 @@ form textarea {
   height: 6rem;
   border-radius: 5px;
   width: -webkit-fill-available;
-  border: 1px solid #919090eb;
+  border: 1px solid #3dffff;
   padding: 0.8rem 1rem;
   font-family: "Rubik", sans-serif;
   resize: none;
@@ -113,7 +115,7 @@ form button {
   padding: 0.8rem 1.5rem;
   border-radius: 5px;
   border: none;
-  background: #5f28d1;
+  background: hsl(238, 40%, 52%);
   font-weight: bold;
   color: white;
   font-size: 1rem;
@@ -121,7 +123,14 @@ form button {
 .hide {
   display: block !important;
 }
-.reply2 .replyBox {
+form > div {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.reply2 .replyBox,
+form > textarea {
   display: none;
 }
 
@@ -135,7 +144,7 @@ form button {
 }
 @media only screen and (max-width: 600px) {
   #root {
-    padding-bottom: 7rem;
+    padding-bottom: 12.4rem;
   }
   .card {
     flex-direction: column-reverse;
@@ -157,11 +166,13 @@ form button {
     bottom: 1rem;
     padding: 0 1rem;
   }
-  #mainInput img {
+  form img {
     padding-left: 0;
+    height: 3.2rem;
   }
-  #mainInput textarea {
-    margin: 0 1rem;
+  form > textarea {
+    /* margin: 0 1rem; */
+    margin: 0 0 5px 0;
   }
   .reply-card {
     padding-left: 1.4rem;
@@ -176,10 +187,12 @@ form button {
     width: 100%;
     margin-top: 1.5rem;
   }
-  .avatarBox .replyBox {
+  .avatarBox .replyBox,
+  form > div > textarea {
     display: none;
   }
-  .reply2 .replyBox {
+  .reply2 .replyBox,
+  form > textarea {
     display: flex;
   }
   .reply-card .reply2 {
@@ -195,6 +208,16 @@ form button {
   .reply-card .comment p {
     font-size: clamp(0.5rem, 3.5vw, 1rem);
     margin-top: 0;
+  }
+  form > div {
+    justify-content: space-between;
+    align-items: center;
+  }
+  form {
+    flex-direction: column;
+    background: aliceblue;
+    padding: 1rem;
+    border-radius: 10px;
   }
 
 }
