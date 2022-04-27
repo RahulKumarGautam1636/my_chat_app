@@ -53,19 +53,22 @@ body {
     display: flex;
     align-items: center;
 }
-.replyBox {
+.replyBox div {
     display: flex;
     align-items: center;
+}
+.replyBox > div:first-child {
+  margin-right: 1.7rem;
 }
 .avatar {
     height: 2rem;
 }
 .userName {
-    margin: 0 1rem;
     color: hsl(212, 24%, 26%);
 }
 .replyBox h4 {
     color: hsl(238, 40%, 52%);
+    font-size: clamp(0.5rem, 4.5vw, 1rem);
 }
 .reply {
     margin-right: 1rem;
@@ -76,6 +79,13 @@ body {
 .comment p {
     line-height: 1.5rem;
     font-size: clamp(0.5rem, 4vw, 1rem);
+}
+.youTag {
+  padding: 5px 7px;
+  background: hsl(238, 40%, 52%);
+  border-radius: 3px;
+  color: white;
+  font-size: clamp(0.5rem, 3vw, 0.8rem);
 }
 .createdAt {
     font-size: clamp(0.5rem, 4vw, 1rem);
@@ -133,18 +143,40 @@ form > div {
 form > textarea {
   display: none;
 }
+.avatarBox > div:first-child {
+  justify-content: space-between;
+  width: 18rem;
+}
+.attribution {
+  text-align: center;
+  background: hsl(233, 12%, 13%);
+  border-top: 1px solid hsl(246, 103%, 57%);
+}
+.attribution a {
+  font-size: 0.7rem;
+  text-decoration: none;
+  color: hsl(39, 89%, 49%);
+}
+.attribution p {
+  font-size: 0.7rem;
+  color: hsl(189, 59%, 53%);
+}
+.attribution {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
 
 @media only screen and (max-width: 850px) {
   #root {
-    /* padding: 2rem 2rem 4rem 2rem; */
     min-width: auto;
     width: 88%;
-
   }
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
   #root {
-    padding-bottom: 12.4rem;
+    padding-bottom: 15rem;
   }
   .card {
     flex-direction: column-reverse;
@@ -153,8 +185,10 @@ form > textarea {
   .voteBox {
     flex-direction: row;
     height: 2.5rem;
-    width: 6.5rem;
-    /* margin: 1.5rem auto 0 0; */
+    width: clamp(3rem, 26vw, 6.5rem);
+  }
+  .reply-card .voteBox {
+    height: 2.1rem;
   }
   .commentBox {
     margin-left: 0;
@@ -163,7 +197,7 @@ form > textarea {
     position: absolute;
     width: 100%;
     left: 0;
-    bottom: 1rem;
+    bottom: 3rem;
     padding: 0 1rem;
   }
   form img {
@@ -171,14 +205,10 @@ form > textarea {
     height: 3.2rem;
   }
   form > textarea {
-    /* margin: 0 1rem; */
-    margin: 0 0 5px 0;
+    margin: 0 0 0.7rem 0;
   }
   .reply-card {
     padding-left: 1.4rem;
-  }
-  .reply-card .card {
-    padding: 1.8rem;
   }
   .reply2 {
     display: flex;
@@ -195,6 +225,38 @@ form > textarea {
   form > textarea {
     display: flex;
   }
+  form > div {
+    justify-content: space-between;
+    align-items: center;
+  }
+  form {
+    flex-direction: column;
+    background: aliceblue;
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+}
+@media only screen and (max-width: 450px) {
+  .card {
+    padding: clamp(0.5rem, 6vw, 1.7rem);
+  }
+  .replyBox > div:first-child {
+    margin-right: 0.8rem;
+  }
+  .reply {
+    margin-right: 0.5rem;
+  }
+  .reply-card .replyBox > div:first-child {
+    margin-right: 0.5rem;
+  }
+  .reply-card .reply {
+    margin-right: 0.5rem;
+    height: 12px;
+  }
+  .reply-card .replyBox h4 {
+    font-size: 3.2vw;
+  }
   .reply-card .reply2 {
     margin-top: 1rem;
   }
@@ -209,15 +271,10 @@ form > textarea {
     font-size: clamp(0.5rem, 3.5vw, 1rem);
     margin-top: 0;
   }
-  form > div {
-    justify-content: space-between;
-    align-items: center;
-  }
-  form {
-    flex-direction: column;
-    background: aliceblue;
-    padding: 1rem;
-    border-radius: 10px;
+}
+@media only screen and (max-width: 320px) {
+  .avatar {
+    height: 1.5rem;
   }
 
 }

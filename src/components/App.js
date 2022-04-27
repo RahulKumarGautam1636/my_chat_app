@@ -7,12 +7,18 @@ const App = () => {
   const [myData, setMyData] = useState(data.comments);
 
   return (
+    <>
     <div>
     <Timeline myData={myData} setMyData={setMyData}/>
     <div id="mainInput">
     <InputBox myData={myData} setMyData={setMyData}/>
     </div>
     </div>
+    <div className="attribution">
+    <p>Challenge by - <span><a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.</span>
+    Coded by - <span><a href="https://www.frontendmentor.io/profile/RahulKumarGautam1636">Rahul Kumar Gautam</a></span>.</p>
+    </div>
+    </>
   )
 }
 
@@ -81,8 +87,6 @@ const InputBox = (props) => {
         props.setMyData(preData => {
           return (
             preData.filter((item) => {
-              console.log(typeof(randomId));
-
               return item.id !== randomId;             // ------------------
             })
           )
@@ -173,14 +177,45 @@ const Card = (props) => {
   const [replyTo, setReplyTo] = useState('');
   const [replyToId, setReplyId] = useState(null);
   const clickedReply = "input" + props.cardId;
+
   const showInputField = (e) => {
-  const reply = document.querySelector('.' + clickedReply);
-  reply.classList.toggle('hide');
-  let replyingTo = "@" + e.target.attributes.name.value;
-  let replyingToId = e.target.attributes.cardid.value;
-  setReplyTo(replyingTo);
-  setReplyId(replyingToId);
-}
+    if (props.comments.user.username===data.currentUser.username) {
+      console.log("delete")
+      deleteComment();
+      return;
+    }
+
+    const reply = document.querySelector('.' + clickedReply);
+    reply.classList.toggle('hide');
+    let replyingTo = "@" + e.target.attributes.name.value;
+    let replyingToId = e.target.attributes.cardid.value;
+    setReplyTo(replyingTo);
+    setReplyId(replyingToId);
+
+  }
+  const deleteComment = () => {
+    props.setMyData(preData => {
+      return (
+        preData.filter(item => item.id !== props.comments.id)
+      )
+    })
+    // props.setMyData(preData => {
+    //   return (
+    //     preData.forEach((x, i) => {
+    //       x.replies.forEach(item => {
+    //         if (item.id===props.comments.id) {
+    //           return preData[i].replies.filter(n => n.id !== props.comments.id)
+    //         }
+    //       })
+    //     })
+    //   )
+    // })
+
+  }
+  const editComment = () => {
+    console.log("editComment");
+
+  }
 
 
   return (
@@ -193,20 +228,33 @@ const Card = (props) => {
       <img src="images/icon-minus.svg" alt="downvote" className="downvote" />
       </div>
       <div className="replyBox">
-        <img className="reply" src="images/icon-reply.svg" alt="reply" />
-        <h4 onClick={showInputField} name={props.comments.user.username} cardid={props.cardId}>Reply</h4>
+          <div>
+            <img className="reply" src={"images/icon-" + (props.comments.user.username===data.currentUser.username ? "delete" : "reply") + ".svg"} alt="delete" />
+            <h4 onClick={showInputField} name={props.comments.user.username} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
+          </div>
+          <div style={{display: props.comments.user.username===data.currentUser.username ? "flex" : "none"}}>
+            <img className="reply" src="images/icon-edit.svg" alt="edit" />
+            <h4 onClick={showInputField} name={props.comments.user.username} cardid={props.cardId}>Edit</h4>
+          </div>
       </div>
       </div>
       <div className="commentBox">
       <div className="avatarBox">
-        <div>
+        <div style={{width: props.comments.user.username!==data.currentUser.username ? "clamp(1rem, 68vw, 15.5rem)" : "18rem"}}>
           <img className="avatar" src={props.comments.user.image.png} alt="avatar" />
           <h4 className="userName">{props.comments.user.username}</h4>
+          <h5 className="youTag" style={{display: props.comments.user.username===data.currentUser.username ? "block" : "none"}}>You</h5>
           <p className="createdAt">{props.comments.createdAt}</p>
         </div>
         <div className="replyBox">
-          <img className="reply" src="images/icon-reply.svg" alt="reply" />
-          <h4 onClick={showInputField} name={props.comments.user.username} cardid={props.cardId}>Reply</h4>
+            <div onClick={showInputField}>
+              <img className="reply" src={"images/icon-" + (props.comments.user.username===data.currentUser.username ? "delete" : "reply") + ".svg"} alt="delete" />
+              <h4 name={props.comments.user.username} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
+            </div>
+            <div onClick={editComment} style={{display: props.comments.user.username===data.currentUser.username ? "flex" : "none"}}>
+              <img className="reply" src="images/icon-edit.svg" alt="edit" />
+              <h4 name={props.comments.user.username} cardid={props.cardId}>Edit</h4>
+            </div>
         </div>
       </div>
       <div className="comment">
