@@ -189,16 +189,16 @@ const Card = (props) => {
   const clickedReply = "input" + props.cardId;
   const showInputField = (e) => {
 
-    if (e.target.attributes.name.value === "delete") {
+    if (e.target.attributes.name.value.split(' ')[0] === "delete") {
       deleteComment();
       return;
     }
 
-    setOperationType(e.target.attributes.name.value);                  // Set operationType here otherwise delete function will get delayed by one click.
+    setOperationType(e.target.attributes.name.value.split(' ')[0]);                  // Set operationType here otherwise delete function will get delayed by one click.
     const reply = document.querySelector('.' + clickedReply);          // Because of using setOperationType because using setOperationType will stop the
     reply.classList.toggle('hide');                                    // the execution here and will start executing from top again.
     let replyingToId = e.target.attributes.cardid.value;
-    let replyingTo = "@" + e.target.attributes.replytoname.value;
+    let replyingTo = "@" + e.target.attributes.name.value.split(' ')[1];
     setReplyTo(replyingTo);
     setReplyId(replyingToId);
 
@@ -252,11 +252,11 @@ const Card = (props) => {
         <div className="replyBox">
             <div>
               <img className="reply" src={"images/icon-" + (props.comments.user.username===data.currentUser.username ? "delete" : "reply") + ".svg"} alt="delete" />
-              <h4 onClick={showInputField} name={props.comments.user.username===data.currentUser.username ? "delete" : "reply"} replytoname={props.comments.user.username} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
+              <h4 onClick={showInputField} name={props.comments.user.username===data.currentUser.username ? "delete " + props.comments.user.username : "reply " +props.comments.user.username} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
             </div>
             <div style={{display: props.comments.user.username===data.currentUser.username ? "flex" : "none"}}>
               <img className="reply" src="images/icon-edit.svg" alt="edit" />
-              <h4 onClick={showInputField} name="edit" replytoname={props.comments.user.username} cardid={props.cardId}>Edit</h4>
+              <h4 onClick={showInputField} name="edit" cardid={props.cardId}>Edit</h4>
             </div>
         </div>
       </div>
