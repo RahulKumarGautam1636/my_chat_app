@@ -94,7 +94,7 @@ const InputBox = (props) => {
         props.setMyData(preData => {
           return (
             preData.filter((item) => {
-              return item.id !== randomId;             // ------------------
+              return item.id !== randomId;
             })
           )
         });
@@ -183,21 +183,20 @@ const ReplyCard = (props) => {
 const Card = (props) => {
   const [replyTo, setReplyTo] = useState("");
   const [replyToId, setReplyId] = useState(null);
+  const [operationType, setOperationType] = useState("");
 
 
   const clickedReply = "input" + props.cardId;
-  let operationType = "";
   const showInputField = (e) => {
 
-    operationType = e.target.attributes.name.value;
-    if (operationType === "delete") {
-      console.log("delete")
+    if (e.target.attributes.name.value === "delete") {
       deleteComment();
       return;
     }
 
-    const reply = document.querySelector('.' + clickedReply);
-    reply.classList.toggle('hide');
+    setOperationType(e.target.attributes.name.value);                  // Set operationType here otherwise delete function will get delayed by one click.
+    const reply = document.querySelector('.' + clickedReply);          // Because of using setOperationType because using setOperationType will stop the
+    reply.classList.toggle('hide');                                    // the execution here and will start executing from top again.
     let replyingTo = "@" + e.target.attributes.name.value;
     let replyingToId = e.target.attributes.cardid.value;
     setReplyTo(replyingTo);
@@ -210,32 +209,17 @@ const Card = (props) => {
         preData.filter(item => item.id !== props.comments.id)
       )
     })
-    // props.setMyData(preData => {
-    //   return (
-    //     preData.forEach((x, i) => {
-    //       x.replies.forEach(item => {
-    //         if (item.id===props.comments.id) {
-    //           return preData[i].replies.filter(n => n.id !== props.comments.id)
-    //         }
-    //       })
-    //     })
-    //   )
-    // })
-
   }
 
   const vote = (e) => {
-    operationType = e.target.attributes.name.value;
-    if (operationType === "upVote") {
+    if (e.target.attributes.name.value === "upVote") {
       let upvote = props.myData.map(i => (i.id === Number(props.cardId) ? {...i, "score": i.score+1} : i));
       props.setMyData(upvote);
-    } else if (operationType === "downVote") {
+    } else if (e.target.attributes.name.value === "downVote") {
       let downvote = props.myData.map(i => (i.id === Number(props.cardId) ? {...i, "score": i.score-1} : i));
       props.setMyData(downvote);
     }
   }
-
-
 
   return (
     <>
