@@ -15,7 +15,7 @@ const App = () => {
     </div>
     </div>
     <div className="attribution">
-    <p>Challenge by - <span><a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.</span>
+    <p>Challenge by - <span><a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>.</span>
     Coded by - <span><a href="https://www.frontendmentor.io/profile/RahulKumarGautam1636">Rahul Kumar Gautam</a></span>.</p>
     </div>
     </>
@@ -28,6 +28,13 @@ const InputBox = (props) => {
   const handleForm = (e) => {
 
     e.preventDefault();
+    if (props.operationType === "edit") {
+      let editedComment = props.myData.map(i => (i.id === Number(props.replyingToId) ? {...i, "content": comment} : i));
+      props.setMyData(editedComment);
+      setComment("");
+      return;
+    }
+
     const randomId = Math.floor(Math.random()*1000000);
 
     const newComment = {
@@ -174,12 +181,16 @@ const ReplyCard = (props) => {
 }
 
 const Card = (props) => {
-  const [replyTo, setReplyTo] = useState('');
+  const [replyTo, setReplyTo] = useState("");
   const [replyToId, setReplyId] = useState(null);
-  const clickedReply = "input" + props.cardId;
 
+
+  const clickedReply = "input" + props.cardId;
+  let operationType = "";
   const showInputField = (e) => {
-    if (props.comments.user.username===data.currentUser.username) {
+
+    operationType = e.target.attributes.name.value;
+    if (operationType === "delete") {
       console.log("delete")
       deleteComment();
       return;
@@ -212,10 +223,18 @@ const Card = (props) => {
     // })
 
   }
-  const editComment = () => {
-    console.log("editComment");
 
+  const vote = (e) => {
+    operationType = e.target.attributes.name.value;
+    if (operationType === "upVote") {
+      let upvote = props.myData.map(i => (i.id === Number(props.cardId) ? {...i, "score": i.score+1} : i));
+      props.setMyData(upvote);
+    } else if (operationType === "downVote") {
+      let downvote = props.myData.map(i => (i.id === Number(props.cardId) ? {...i, "score": i.score-1} : i));
+      props.setMyData(downvote);
+    }
   }
+
 
 
   return (
@@ -223,18 +242,18 @@ const Card = (props) => {
     <div className="card">
       <div className="reply2">
       <div className="voteBox">
-      <img src="images/icon-plus.svg" alt="upvote" className="upvote" />
+      <img onClick={vote} name="upVote" src="images/icon-plus.svg" alt="upvote" className="upvote" />
       <h5>{props.comments.score}</h5>
-      <img src="images/icon-minus.svg" alt="downvote" className="downvote" />
+      <img onClick={vote} name="downVote" src="images/icon-minus.svg" alt="downvote" className="downvote" />
       </div>
       <div className="replyBox">
           <div>
             <img className="reply" src={"images/icon-" + (props.comments.user.username===data.currentUser.username ? "delete" : "reply") + ".svg"} alt="delete" />
-            <h4 onClick={showInputField} name={props.comments.user.username} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
+            <h4 onClick={showInputField} name={props.comments.user.username===data.currentUser.username ? "delete" : "reply"} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
           </div>
           <div style={{display: props.comments.user.username===data.currentUser.username ? "flex" : "none"}}>
             <img className="reply" src="images/icon-edit.svg" alt="edit" />
-            <h4 onClick={showInputField} name={props.comments.user.username} cardid={props.cardId}>Edit</h4>
+            <h4 onClick={showInputField} name="edit" cardid={props.cardId}>Edit</h4>
           </div>
       </div>
       </div>
@@ -247,13 +266,13 @@ const Card = (props) => {
           <p className="createdAt">{props.comments.createdAt}</p>
         </div>
         <div className="replyBox">
-            <div onClick={showInputField}>
+            <div>
               <img className="reply" src={"images/icon-" + (props.comments.user.username===data.currentUser.username ? "delete" : "reply") + ".svg"} alt="delete" />
-              <h4 name={props.comments.user.username} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
+              <h4 onClick={showInputField} name={props.comments.user.username===data.currentUser.username ? "delete" : "reply"} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
             </div>
-            <div onClick={editComment} style={{display: props.comments.user.username===data.currentUser.username ? "flex" : "none"}}>
+            <div style={{display: props.comments.user.username===data.currentUser.username ? "flex" : "none"}}>
               <img className="reply" src="images/icon-edit.svg" alt="edit" />
-              <h4 name={props.comments.user.username} cardid={props.cardId}>Edit</h4>
+              <h4 onClick={showInputField} name="edit" cardid={props.cardId}>Edit</h4>
             </div>
         </div>
       </div>
@@ -263,7 +282,7 @@ const Card = (props) => {
     </div>
     </div>
     <div style={{display: "none"}} className={clickedReply}>
-      <InputBox replyingTo={replyTo} replyingToId={replyToId} myData={props.myData} setMyData={props.setMyData}/>
+      <InputBox operationType={operationType} replyingTo={replyTo} replyingToId={replyToId} myData={props.myData} setMyData={props.setMyData}/>
     </div>
     </>
   )
