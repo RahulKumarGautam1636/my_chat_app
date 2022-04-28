@@ -194,7 +194,7 @@ const Card = (props) => {
       return;
     }
 
-    setOperationType(e.target.attributes.name.value.split(' ')[0]);                  // Set operationType here otherwise delete function will get delayed by one click.
+    setOperationType(e.target.attributes.name.value.split(' ')[0]);    // Set operationType here otherwise delete function will get delayed by one click.
     const reply = document.querySelector('.' + clickedReply);          // Because of using setOperationType because using setOperationType will stop the
     reply.classList.toggle('hide');                                    // the execution here and will start executing from top again.
     let replyingToId = e.target.attributes.cardid.value;
