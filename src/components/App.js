@@ -23,7 +23,7 @@ const App = () => {
 }
 
 const InputBox = (props) => {
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState();
 
   const handleForm = (e) => {
 
@@ -139,10 +139,10 @@ const InputBox = (props) => {
   }
   return (
       <form onSubmit={handleForm}>
-        <textarea onChange={e => setComment(e.target.value)} name="comment" value={comment} placeholder={props.replyingTo} rows="8" cols="80"></textarea>
+        <textarea id={"inputField1_" + props.cardId} onChange={e => setComment(e.target.value)} name="comment" value={comment} placeholder={props.replyingTo} rows="8" cols="80"></textarea>
           <div>
             <img src={data.currentUser.image.png} alt="avatar" />
-            <textarea onChange={e => setComment(e.target.value)} name="comment" value={comment} placeholder={props.replyingTo} rows="8" cols="80"></textarea>
+            <textarea id={"inputField2_" + props.cardId} onChange={e => setComment(e.target.value)} name="comment" value={comment} placeholder={props.replyingTo} rows="8" cols="80"></textarea>
             <button type="submit">SEND</button>
           </div>
       </form>
@@ -181,27 +181,35 @@ const ReplyCard = (props) => {
 }
 
 const Card = (props) => {
-  const [replyTo, setReplyTo] = useState("");
-  const [replyToId, setReplyId] = useState(null);
+  // const [replyTo, setReplyTo] = useState("");
+  // const [replyToId, setReplyId] = useState(null);
+  const [replyTo, setReplyTo] = useState({replyToName: "", replyToId: null})
   const [operationType, setOperationType] = useState("");
 
 
   const clickedReply = "input" + props.cardId;
   const showInputField = (e) => {
 
-    if (e.target.attributes.name.value.split(' ')[0] === "delete") {
+    if (e.target.attributes.name.value.split(',')[0] === "delete") {
       deleteComment();
       return;
     }
 
-    setOperationType(e.target.attributes.name.value.split(' ')[0]);    // Set operationType here otherwise delete function will get delayed by one click.
+    setOperationType(e.target.attributes.name.value.split(',')[0]);    // Set operationType here otherwise delete function will get delayed by one click.
     const reply = document.querySelector('.' + clickedReply);          // Because of using setOperationType because using setOperationType will stop the
     reply.classList.toggle('hide');                                    // the execution here and will start executing from top again.
     let replyingToId = e.target.attributes.cardid.value;
-    let replyingTo = "@" + e.target.attributes.name.value.split(' ')[1];
-    setReplyTo(replyingTo);
-    setReplyId(replyingToId);
-
+    let replyingTo = "@" + e.target.attributes.name.value.split(',')[1];
+    // setReplyTo(replyingTo);
+    if (e.target.attributes.name.value.split(',')[0] === "reply") {
+      setReplyTo({replyToName: replyingTo, replyToId: replyingToId});
+      // document.querySelector("#inputField1_"+props.cardId).value = replyingTo + " ";
+      // document.querySelector("#inputField2_"+props.cardId).value = replyingTo + " ";
+      return;
+    } else if (e.target.attributes.name.value.split(',')[0] === "edit")
+      setReplyTo({replyToName: "", replyToId: replyingToId});
+      document.querySelector("#inputField1_"+props.cardId).value = props.comments.content + " ";
+      document.querySelector("#inputField2_"+props.cardId).value = props.comments.content + " ";
   }
   const deleteComment = () => {
     props.setMyData(preData => {
@@ -233,7 +241,7 @@ const Card = (props) => {
       <div className="replyBox">
           <div>
             <img className="reply" src={"images/icon-" + (props.comments.user.username===data.currentUser.username ? "delete" : "reply") + ".svg"} alt="delete" />
-            <h4 onClick={showInputField} name={props.comments.user.username===data.currentUser.username ? "delete" : "reply"} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
+            <h4 onClick={showInputField} name={props.comments.user.username===data.currentUser.username ? "delete," + props.comments.user.username : "reply," + props.comments.user.username} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
           </div>
           <div style={{display: props.comments.user.username===data.currentUser.username ? "flex" : "none"}}>
             <img className="reply" src="images/icon-edit.svg" alt="edit" />
@@ -252,7 +260,7 @@ const Card = (props) => {
         <div className="replyBox">
             <div>
               <img className="reply" src={"images/icon-" + (props.comments.user.username===data.currentUser.username ? "delete" : "reply") + ".svg"} alt="delete" />
-              <h4 onClick={showInputField} name={props.comments.user.username===data.currentUser.username ? "delete " + props.comments.user.username : "reply " +props.comments.user.username} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
+              <h4 onClick={showInputField} name={props.comments.user.username===data.currentUser.username ? "delete," + props.comments.user.username : "reply," + props.comments.user.username} cardid={props.cardId}>{props.comments.user.username===data.currentUser.username ? "delete" : "reply"}</h4>
             </div>
             <div style={{display: props.comments.user.username===data.currentUser.username ? "flex" : "none"}}>
               <img className="reply" src="images/icon-edit.svg" alt="edit" />
@@ -266,7 +274,7 @@ const Card = (props) => {
     </div>
     </div>
     <div style={{display: "none"}} className={clickedReply}>
-      <InputBox operationType={operationType} replyingTo={replyTo} replyingToId={replyToId} myData={props.myData} setMyData={props.setMyData}/>
+      <InputBox cardId={props.cardId} operationType={operationType} replyingTo={replyTo.replyToName} replyingToId={replyTo.replyToId} myData={props.myData} setMyData={props.setMyData}/>
     </div>
     </>
   )
