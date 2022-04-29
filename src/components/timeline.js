@@ -5,22 +5,19 @@ import Card from './card.js';
 
 
 const Timeline = (props) => {
-
     return (
       <>
-      { props.data.comments.map((c, index) => {
+      { props.myData.map((c, x) => {
         return (
-          <div key={index}>
-            <Card comments={c}/>
-
-            { c.replies.map((r, index) => {
-              return (
-                <div key={index}>
-                  <ReplyCard comments={r}/>
-                </div>
-              )
-            }) }
-
+          <div key={x}>
+          <Card cardindex={String(x)+","} user={c.user.username} cardId={c.id} myData={props.myData} setMyData={props.setMyData} comments={c}/>
+          { c.replies.map((r, y) => {
+            return (
+              <div key={y}>
+              <ReplyCard cardindex={String(x)+","+String(y)} user={c.user.username} cardId={r.id} myData={props.myData} setMyData={props.setMyData} comments={r}/>
+              </div>
+            )
+          }) }
           </div>
         )
       }) }
